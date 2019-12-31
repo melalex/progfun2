@@ -1,4 +1,4 @@
-course := "progfun1"
+course := "progfun2"
 assignment := "example"
 scalaVersion := "2.13.1"
 scalacOptions ++= Seq("-language:implicitConversions", "-deprecation")

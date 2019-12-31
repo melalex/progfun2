@@ -1,5 +1,9 @@
 package example
 
+import java.util.NoSuchElementException
+
+import scala.annotation.tailrec
+
 object Lists {
 
   /**
@@ -12,17 +16,25 @@ object Lists {
    *
    *  - `xs.isEmpty: Boolean` returns `true` if the list `xs` is empty
    *  - `xs.head: Int` returns the head element of the list `xs`. If the list
-   *    is empty an exception is thrown
+   * is empty an exception is thrown
    *  - `xs.tail: List[Int]` returns the tail of the list `xs`, i.e. the the
-   *    list `xs` without its `head` element
+   * list `xs` without its `head` element
    *
-   *  ''Hint:'' instead of writing a `for` or `while` loop, think of a recursive
-   *  solution.
+   * ''Hint:'' instead of writing a `for` or `while` loop, think of a recursive
+   * solution.
    *
    * @param xs A list of natural numbers
    * @return The sum of all elements in `xs`
    */
-  def sum(xs: List[Int]): Int = ???
+  def sum(xs: List[Int]): Int = {
+
+    @tailrec
+    def sum(xs: List[Int], res: Int): Int =
+      if (xs.isEmpty) res
+      else sum(xs.tail, xs.head + res)
+
+    sum(xs, 0)
+  }
 
   /**
    * This method returns the largest element in a list of integers. If the
@@ -37,5 +49,18 @@ object Lists {
    * @return The largest element in `xs`
    * @throws java.util.NoSuchElementException if `xs` is an empty list
    */
-  def max(xs: List[Int]): Int = ???
+  def max(xs: List[Int]): Int = {
+    if (xs.isEmpty) {
+      throw new NoSuchElementException()
+    }
+
+    @tailrec
+    def max(xs: List[Int], maxVal: Int): Int = xs match {
+      case Nil => maxVal
+      case head :: tail if head > maxVal => max(tail, head)
+      case _ :: tail => max(tail, maxVal)
+    }
+
+    max(xs, Int.MinValue)
+  }
 }
